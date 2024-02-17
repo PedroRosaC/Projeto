@@ -10,7 +10,7 @@ export const getUsers = (_, res) =>{
     }); 
 }
 export const addUser = (req, res) => {
-    const q = "INSERT INTO financa(`valor`, `descricao`, `tipo`) VALUES(?)";
+    const q = "INSERT INTO `financa` ( `valor`, `descricao`, `tipo`) VALUES (?);";
     const values = [
         req.body.valor,
         req.body.descricao,
