@@ -1,7 +1,7 @@
 import GlobalStyle from "./styles/global";
 import styled from "styled-components";
 import Form from "./components/form.js";
-import Grid from "./components/grid.js";
+import Grid from "./components/grid";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -36,39 +36,38 @@ const Title2 = styled.h3`
 
 
 function App() {
-  const [users,setUsers] = useState([]);
-  const [onEdit,setOnEdit] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [onEdit, setOnEdit] = useState(null);
 
-  const getUsers = async() => {
-    try{
-      const res = await axios.get("http://localHost:8800");
-      setUsers(res.data.sort((a,b) => (a.nome >b.nome ? 1 : -1)));
-    }catch(error){
+  const getUsers = async () => {
+    try {
+      const res = await axios.get("http://localhost:8800");
+      setUsers(res.data.sort((a, b) => (a.nome > b.nome ? 1 : -1)));
+    } catch (error) {
       toast.error(error);
     }
-  }
+  };
 
   useEffect(() => {
     getUsers();
+  }, [setUsers]);
 
-  },[setUsers]);
-  
   return (
     <>
-      <Header>
+     <Header>
         <Title>Gerenciador Financeiro</Title>
         <Title2>Pedro Rosa Cauduro</Title2>
       </Header>
       <Container>
         
-        <Form onEdit={onEdit} setUsers={setUsers} setOnEdit={setOnEdit} />
-        <Grid users={users} setUsers={setUsers} setOnEdit={setOnEdit} />
-        <Title2> Saldo Final: Resultado1 + Saldo inicial - Resultado2 = Z </Title2>
+        <Form onEdit={onEdit} setOnEdit={setOnEdit} getUsers={getUsers} />
+        <Grid setOnEdit={setOnEdit} users={users} setUsers={setUsers} />
+        <Title2>Saldo final: </Title2>
       </Container>
       <ToastContainer autoClose={3000} position={toast} />
+      
 
-
-      <GlobalStyle/>
+      <GlobalStyle />
     </>
   );
 }
